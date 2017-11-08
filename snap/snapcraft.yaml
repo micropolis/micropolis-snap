@@ -1,15 +1,79 @@
-name: my-snap-name # you probably want to 'snapcraft register <name>'
-version: '0.1' # just for humans, typically '1.2+git' or '1.3.2'
-summary: Single-line elevator pitch for your amazing snap # 79 char long summary
+name: micropolis
+version: '1.0'
+summary: Micropolis, the original city simulation game from Maxis Software
 description: |
-  This is my-snap's description. You have a paragraph or two to tell the
-  most important story about your snap. Keep it under 100 words though,
-  we live in tweetspace and your description wants to look good in the snap
-  store.
+  Micropolis, the original award winning city simulation game from
+  Maxis Software, now runs on powerful Unix workstations with X11!  Now
+  it's souped up, and even supports networked multi user collaboration!
+  Multi Player Micropolis is designed to be a fun cooperative educational
+  experience!
 
-confinement: devmode # use 'strict' once you have the right plugs and slots
+  Micropolis is a colorful animated interactive system simulation
+  game, providing a set of rules and tools for planning and building a
+  complex dynamic simulated city.  Several people on different X11
+  workstations can participate in the same city, cooperating and
+  coordinating their actions across the network.
+
+  Working together, you can zone land use, hook up the power grid,
+  build roads, bridges, parks and stadiums, raise taxes, and even summon
+  disasters, causing the city to grow and thrive, or crumble and die.  It's
+  a creative, entertaining way to develop your political skills!
+
+  SimCity designed and implemented by Will Wright,
+  Copyright (C) 2002 by Electronic Arts.
+  Unix porting, optimization and TCL/Tk user interface design
+  by Don Hopkins (dhopkins@DonHopkins.com), for DUX Software.
+  Ported to OLPC Fedora Linux by Don Hopkins.
+
+  SimCity, Unix Version.  This game was released for the Unix platform
+  in or about 1990 and has been modified for inclusion in the One Laptop
+  Per Child program.  Copyright (C) 1989 - 2007 Electronic Arts Inc.
+
+grade: devel
+confinement: devmode
+
+apps:
+  micropolis:
+    command: desktop-launch micropolis
+    plugs:
+      - desktop
+      - pulseaudio
+      - x11
+      - wayland
 
 parts:
-  my-part:
-    # See 'snapcraft plugins'
-    plugin: nil
+  launcher:
+    source: launcher
+    plugin: dump
+    prepare: |
+      chmod +x bin/micropolis
+
+  patches:
+    source: patches
+    plugin: dump
+    prime: [-*]
+
+  micropolis:
+    after: [desktop-glib-only, launcher, patches]
+    source: git://git.zerfleddert.de/micropolis
+    # source: git://dev.laptop.org/projects/simcity-activity
+    source-type: git
+    plugin: make
+    build: |
+      make -C src
+      make
+    install: |
+      make DESTDIR=$SNAPCRAFT_PART_INSTALL install
+      ln -s paplay $SNAPCRAFT_PART_INSTALL/usr/bin/play
+    build-packages:
+      - byacc
+      - libx11-dev
+      - libxext-dev
+      - libxpm-dev
+    stage-packages:
+      - libmagic1
+      - libx11-6
+      - libxext6
+      - libxpm4
+      - locales-all
+      - pulseaudio-utils
