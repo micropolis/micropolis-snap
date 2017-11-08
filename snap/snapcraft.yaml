@@ -29,8 +29,8 @@ description: |
   in or about 1990 and has been modified for inclusion in the One Laptop
   Per Child program.  Copyright (C) 1989 - 2007 Electronic Arts Inc.
 
-grade: devel
-confinement: devmode
+grade: stable
+confinement: strict
 
 apps:
   micropolis:
