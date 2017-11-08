@@ -35,6 +35,7 @@ confinement: devmode
 apps:
   micropolis:
     command: desktop-launch micropolis
+    desktop: usr/local/share/applications/micropolis.desktop
     plugs:
       - desktop
       - pulseaudio
@@ -48,17 +49,14 @@ parts:
     prepare: |
       chmod +x bin/micropolis
 
-  patches:
-    source: patches
-    plugin: dump
-    prime: [-*]
-
   micropolis:
-    after: [desktop-glib-only, launcher, patches]
+    after: [desktop-glib-only, launcher]
     source: git://git.zerfleddert.de/micropolis
     # source: git://dev.laptop.org/projects/simcity-activity
     source-type: git
     plugin: make
+    prepare: |
+      sed -i 's|^Icon=|Icon=${SNAP}/usr/local/share/pixmaps/micropolis.png|' Micropolis.desktop
     build: |
       make -C src
       make
