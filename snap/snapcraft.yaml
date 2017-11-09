@@ -1,5 +1,6 @@
 name: micropolis
 version: '1.0'
+icon: micropolis.png
 summary: Micropolis, the original city simulation game from Maxis Software
 description: |
   Micropolis, the original award winning city simulation game from
