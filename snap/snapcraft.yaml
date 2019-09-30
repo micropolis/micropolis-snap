@@ -58,7 +58,7 @@ parts:
     source-type: git
     plugin: make
     prepare: |
-      sed -i 's|^Icon=|Icon=${SNAP}/usr/local/share/pixmaps/micropolis.png|' Micropolis.desktop
+      sed -i 's|^Icon=.*|Icon=/usr/local/share/pixmaps/micropolis.png|' Micropolis.desktop
     build: |
       make -C src
       make
