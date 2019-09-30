@@ -38,6 +38,7 @@ apps:
     command: desktop-launch micropolis
     desktop: usr/local/share/applications/micropolis.desktop
     plugs:
+      - audio-playback
       - desktop
       - pulseaudio
       - x11
