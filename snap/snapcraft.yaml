@@ -30,12 +30,14 @@ description: |
   in or about 1990 and has been modified for inclusion in the One Laptop
   Per Child program.  Copyright (C) 1989 - 2007 Electronic Arts Inc.
 
+base: core20
 grade: stable
 confinement: strict
 
 apps:
   micropolis:
-    command: desktop-launch micropolis
+    command: bin/micropolis
+    command-chain: [bin/desktop-launch]
     desktop: usr/local/share/applications/micropolis.desktop
     plugs:
       - audio-playback
@@ -45,11 +47,18 @@ apps:
       - wayland
 
 parts:
+  desktop-glib-only:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: glib-only
+    plugin: make
+    build-packages:
+      - libglib2.0-dev
+    stage-packages:
+      - libglib2.0-bin
+
   launcher:
     source: launcher
     plugin: dump
-    prepare: |
-      chmod +x bin/micropolis
 
   micropolis:
     after: [desktop-glib-only, launcher]
@@ -57,12 +66,12 @@ parts:
     # source: git://dev.laptop.org/projects/simcity-activity
     source-type: git
     plugin: make
-    prepare: |
+    override-pull: |
+      snapcraftctl pull
       sed -i 's|^Icon=.*|Icon=/usr/local/share/pixmaps/micropolis.png|' Micropolis.desktop
-    build: |
+    override-build: |
       make -C src
       make
-    install: |
       make DESTDIR=$SNAPCRAFT_PART_INSTALL install
       ln -s paplay $SNAPCRAFT_PART_INSTALL/usr/bin/play
     build-packages:
