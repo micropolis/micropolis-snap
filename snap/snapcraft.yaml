@@ -68,6 +68,7 @@ parts:
     plugin: make
     override-pull: |
       snapcraftctl pull
+      sed -i 's|set CityDir .*|set CityDir $env(SNAP_USER_COMMON)|' res/micropolis.tcl
       sed -i 's|^Icon=.*|Icon=/usr/local/share/pixmaps/micropolis.png|' Micropolis.desktop
     override-build: |
       make -C src
