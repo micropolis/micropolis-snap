@@ -3,4 +3,4 @@
 export SIMHOME="$SNAP/usr/local/share/micropolis"
 
 cd "$SIMHOME"
-exec "$SNAP/usr/local/libexec/sim" "$@"
+exec "$@"

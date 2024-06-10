@@ -30,14 +30,20 @@ description: |
   in or about 1990 and has been modified for inclusion in the One Laptop
   Per Child program.  Copyright (C) 1989 - 2007 Electronic Arts Inc.
 
-base: core20
+base: core22
 grade: stable
 confinement: strict
 
+layout:
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/sox:
+    bind: $SNAP/usr/lib/x86_64-linux-gnu/sox
+
 apps:
   micropolis:
-    command: bin/micropolis
-    command-chain: [bin/desktop-launch]
+    extensions: [gnome]
+    command: usr/local/libexec/micropolis/sim
+    command-chain:
+      - bin/micropolis
     desktop: usr/local/share/applications/micropolis.desktop
     plugs:
       - audio-playback
@@ -47,43 +53,33 @@ apps:
       - wayland
 
 parts:
-  desktop-glib-only:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: glib-only
-    plugin: make
-    build-packages:
-      - libglib2.0-dev
-    stage-packages:
-      - libglib2.0-bin
-
   launcher:
     source: launcher
     plugin: dump
 
   micropolis:
-    after: [desktop-glib-only, launcher]
+    after: [launcher]
     source: git://git.zerfleddert.de/micropolis
     # source: git://dev.laptop.org/projects/simcity-activity
     source-type: git
     plugin: make
     override-pull: |
-      snapcraftctl pull
+      craftctl default
       sed -i 's|set CityDir .*|set CityDir $env(SNAP_USER_COMMON)|' res/micropolis.tcl
       sed -i 's|^Icon=.*|Icon=/usr/local/share/pixmaps/micropolis.png|' Micropolis.desktop
     override-build: |
       make -C src
       make
       make DESTDIR=$SNAPCRAFT_PART_INSTALL install
-      ln -s paplay $SNAPCRAFT_PART_INSTALL/usr/bin/play
     build-packages:
       - byacc
       - libx11-dev
       - libxext-dev
       - libxpm-dev
     stage-packages:
-      - libmagic1
+      - libsox-fmt-pulse
       - libx11-6
       - libxext6
       - libxpm4
       - locales-all
-      - pulseaudio-utils
+      - sox
