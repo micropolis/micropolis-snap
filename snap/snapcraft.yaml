@@ -59,7 +59,7 @@ parts:
 
   micropolis:
     after: [launcher]
-    source: git://git.zerfleddert.de/micropolis
+    source: https://git.zerfleddert.de/git/micropolis
     # source: git://dev.laptop.org/projects/simcity-activity
     source-type: git
     plugin: make
