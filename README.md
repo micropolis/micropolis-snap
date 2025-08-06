@@ -61,6 +61,12 @@ upstream so Micropolis can authoritatively publish future releases.
 
 If you have any questions, [post in the Snapcraft forum](https://forum.snapcraft.io).
 
+## License
+
+This software is free software and licensed under the [Micropolis GPL License](LICENSE).
+
+The name/term "MICROPOLIS" is a registered trademark of [Micropolis](https://www.micropolis.com) GmbH (Micropolis Corporation, the "licensor") and is licensed here to the authors/publishers of the "Micropolis" city simulation game and its source code (the project or "licensee(s)") as a courtesy of the owner under the [Micropolis Public Name License](MicropolisPublicNameLicense.md).
+
 ## The Snapcrafters
 
 | [![Daniel Llewellyn](http://gravatar.com/avatar/c77d9922c44ee0a34b8cabc4029b5082/?s=128)](https://github.com/diddledan/) |
